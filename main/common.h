@@ -38,7 +38,7 @@
 #include <esp_log.h>
 
 // Set this to true if we want to go to AP mode when a WiFi connection fails due to bad password
-#define AP_MODE_ON_BAD_PW false
+#define AP_MODE_ON_BAD_PW true
 
 // Raw and encoded maximum length of WiFi network password
 #define NET_PW_RAW_LEN  64
@@ -48,7 +48,7 @@
 //=========================================================================================================
 // GPIO pin definitions
 //=========================================================================================================
-#define PIN_PROV_BUTTON GPIO_NUM_5
+#define PIN_PROV_BUTTON GPIO_NUM_34
 #define PIN_I2C_SDA     GPIO_NUM_4
 #define PIN_I2C_SCL     GPIO_NUM_15
 //=========================================================================================================
