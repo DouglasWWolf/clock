@@ -38,7 +38,7 @@ void cpp_main()
     NVS.init();
 
     // If there's no timezone specified, used US west-coast as a deefault
-    if (NVS.data.timezone[0]) safe_copy(NVS.data.timezone, "PST8PDT7,M3.13.0/02:00:00,M11.6.0/02:00:00");
+    if (NVS.data.timezone[0] == 0) safe_copy(NVS.data.timezone, "PST8PDT7,M3.13.0/02:00:00,M11.6.0/02:00:00");
 
     // Set the timezone
     setenv("TZ", NVS.data.timezone, 1);
