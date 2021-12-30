@@ -158,17 +158,36 @@ static const char script_on_brighter[] =
     "function on_brighter()\n"
     "{\n"
         "on_main_screen_button('/brighter');\n"
-     "}\n"
-     "</script>\n";
+    "}\n"
+    "</script>\n";
 
 static const char script_on_dimmer[] =
     "<script>\n"
     "function on_dimmer()\n"
     "{\n"
         "on_main_screen_button('/dimmer');\n"
-     "}\n"
-     "</script>\n";
+    "}\n"
+    "</script>\n";
 //=========================================================================================================
+
+
+
+//=========================================================================================================
+// script_on_config[] - JavaScript function "on_config"
+//=========================================================================================================
+static const char script_on_config[] = 
+    "<script>\n"
+    "function on_config()\n"
+    "{\n"
+        "var xhr=new XMLHttpRequest();\n"
+        "xhr.open('GET','/config', true);\n"
+        "xhr.setRequestHeader('Content-Type','application/json');\n"
+        "xhr.send();\n"
+    "}\n"
+    "</script>\n";
+//=========================================================================================================
+
+
 
 
 
@@ -186,8 +205,13 @@ static const char html_index_02[] =
     "<button class='button' id='brt_button' onclick='on_brighter()'>Brighter</button><br>"
     "<button class='button' id='dim_button' onclick='on_dimmer()'>Dimmer</button><br>"
     "<br><br><br>"
-    "<button class='button' id='config_button' onclick='on_config()'>Configure</button><br>"
+    
+    "<form action='/config' method='post'>"
+    "<button class='button' type='submit', id='config_button'>Configure</button><br>"
+    "</form>"
+
     "<button class='button' id='reboot_button' onclick='on_reboot()'>Reboot Device</button>";
+
 
 
 void CHTTPServer::reply_to_index()
@@ -200,10 +224,57 @@ void CHTTPServer::reply_to_index()
     webpage += script_on_main_screen_button;
     webpage += script_on_brighter;
     webpage += script_on_dimmer;
+    webpage += script_on_config;
     webpage += html_final;
     reply(200, webpage.text());
 }
 //=========================================================================================================
+
+
+//=========================================================================================================
+// reply_to_config() - Replies to an "HTTP POST /config""
+//=========================================================================================================
+static const char html_config_01[] =  "<body><h1>Doug's Clock</h1>";
+
+static const char html_config_02[] = 
+    "<table>"
+    "<tr>"
+    "<th>Network SSID</th>"
+    "<th>Network Password</th>"
+    "<th>UTC +/-</th>"
+    "</tr>";
+
+
+static const char html_config_03[] =
+    "<br>"
+    "<button class='button' id='save_button' onclick='on_config_save()'>Save Changes</button><br>"
+    "<br>"
+    "<form action='/' method='post'>"
+    "<button class='button' type='submit', id='exit_button'>Exit Without Saving</button><br>"
+    "</form>";
+
+void CHTTPServer::reply_to_config()
+{
+    webpage.start();
+    webpage += html_style;
+    webpage += html_config_01;
+    webpage += html_config_02;
+    webpage += "<tr>";
+    webpage.addf("<td><input id='netssid'    value ='%s' autofocus</td>", "mountain_hold");
+    webpage.addf("<td><input id='netpw'      value ='%s'</td>", "midgets!");
+    webpage.addf("<td><input id='utc_offset' value ='%i'</td>", -7);
+    webpage += "</tr>";
+    webpage += "</table><br><br>";
+    webpage += html_config_03;
+    webpage += html_final;
+
+    reply(200, webpage.text());
+}
+//=========================================================================================================
+
+
+
+
 
 
 //=========================================================================================================
@@ -230,6 +301,13 @@ void CHTTPServer::on_http_get(const char* resource)
 //=========================================================================================================
 void CHTTPServer::on_http_post(const char* resource)
 {
+    // Is this an HTTP POST for "/"?
+    if (strcmp(resource, "/") == 0)
+    {
+        reply_to_index();
+        return;
+    }
+
     // Is this an "HTTP POST /reboot" ?
     if (strcmp(resource, "/reboot") == 0)
     {
@@ -253,6 +331,13 @@ void CHTTPServer::on_http_post(const char* resource)
     {
         reply(201, "");
         printf(">> Dimmer! <<\n");
+        return;
+    }
+
+    // Is this "HTTP POST /config" ?
+    if (strcmp(resource, "/config") == 0)
+    {
+        reply_to_config();
         return;
     }
 

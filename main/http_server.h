@@ -21,8 +21,11 @@ protected:
     // Called when an HTTP POST is received
     void    on_http_post(const char* resource);
 
-    // Reply to an HTTP GET of the index page
+    // Reply to an HTTP GET /
     void    reply_to_index();
+
+    // Reply to an HTTP POST /config
+    void    reply_to_config();
 };
 //=========================================================================================================
 
