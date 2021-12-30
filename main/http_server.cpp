@@ -50,7 +50,7 @@ static const char html_style[] =
             "justify-content:center;"
             "margin:0 auto;"
             "background-color: #7892c2;"
-            "width:40%;"
+            "width:700px;"
             "border:2px solid black;"
             "text-align:center;"
             "border-radius:12px;"
@@ -61,6 +61,30 @@ static const char html_style[] =
         ".button:hover"
         "{"
             "background-color: #C0C0C0;"
+        "}"
+
+        ".square"
+        "{"
+            "display: table-cell;"
+            "justify-content:center;"
+            "margin:0 auto;"
+            "background-color: #7892c2;"
+            "height:300px;"
+            "width:300px;"
+            "border:2px solid black;"
+            "text-align:center;"
+            "vertical-align:middle"
+            "border-radius:12px;"
+            "font-size: 35px;"
+        "}"
+
+        ".centered"
+        "{"
+            "display: flex;"
+            "justify-content:center;"
+            "margin:0 auto;"
+            "width:700px;"
+            "text-align:center;"
         "}"
 
         "h1"
@@ -227,12 +251,16 @@ static const char html_index_01[] =
 
 static const char html_index_02[] =
 	"<br><br>"
-    "<button class='button' id='brt_button' onclick='on_brighter()'>Brighter</button><br>"
-    "<button class='button' id='dim_button' onclick='on_dimmer()'>Dimmer</button><br>"
-    "<br><br><br>"
+
+    "<div class='centered'>"
+    "<button class='button square' id='brt_button' onclick='on_brighter()'>Brighter</button>"
+    "<button class='button square' id='dim_button' onclick='on_dimmer()'>Dimmer</button>"
+    "</div>"
+    
+    "<br><br><br><br>"
     
     "<form action='/config' method='post'>"
-    "<button class='button' type='submit', id='config_button'>Configure</button><br>"
+    "<button class='button' type='submit', id='config_button'>Configure</button><br><br>"
     "</form>"
 
     "<button class='button' id='reboot_button' onclick='on_reboot()'>Reboot Device</button>";

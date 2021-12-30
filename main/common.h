@@ -84,8 +84,8 @@ struct nvsdata_t
     uint8_t   network_ssid[32];
     char      network_pw[NET_PW_ENC_LEN];
     char      network_user[64];
-    char      timezone[40];
-    char      unused[748];
+    char      timezone[60];
+    char      unused[728];
 };
 //=========================================================================================================
 

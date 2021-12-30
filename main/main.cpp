@@ -37,12 +37,12 @@ void cpp_main()
      // Initialize non-volatile storage in flash memory
     NVS.init();
 
-    // Fetch the timezone and set it
-    if (NVS.data.timezone[0])
-    {
-        setenv("TZ", NVS.data.timezone, 1);
-        tzset();
-    }
+    // If there's no timezone specified, used US west-coast as a deefault
+    if (NVS.data.timezone[0]) safe_copy(NVS.data.timezone, "PST8PDT7,M3.13.0/02:00:00,M11.6.0/02:00:00");
+
+    // Set the timezone
+    setenv("TZ", NVS.data.timezone, 1);
+    tzset();
 
     // Start the GPIO ISR service that will handle all GPIO interrupts
     gpio_install_isr_service(0);
