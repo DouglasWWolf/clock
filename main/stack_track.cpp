@@ -44,6 +44,7 @@ const char* CStackTrack::name(task_idx_t idx)
         case TASK_IDX_MAIN        : return "main";
         case TASK_IDX_PROV_BUTTON : return "prov";
         case TASK_IDX_TCP_SERVER  : return "tcp";
+        case TASK_IDX_HTTP_SERVER : return "http";
         default                   : break;
     }
     return "unknown";

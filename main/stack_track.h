@@ -9,6 +9,7 @@ enum task_idx_t
     TASK_IDX_MAIN = 0,
     TASK_IDX_PROV_BUTTON,
     TASK_IDX_TCP_SERVER,
+    TASK_IDX_HTTP_SERVER,
     TASK_IDX_COUNT
 };
 

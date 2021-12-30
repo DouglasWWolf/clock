@@ -372,8 +372,6 @@ void CHTTPServer::on_http_post(const char* resource)
         return;
     }
 
-
-
     // If we get here, the client was looking for an unknown webpage
     reply(404, "");
 }
@@ -446,5 +444,13 @@ void CHTTPServer::save_updated_config()
 
     // Commit these values to non-volatile storage
     NVS.write_to_flash();
+
+    // If we have timezone data, set the timezone environment variable
+    if (NVS.data.timezone[0])
+    {
+        setenv("TZ", NVS.data.timezone, 1);
+        tzset();
+    }
+
 }
 //=========================================================================================================

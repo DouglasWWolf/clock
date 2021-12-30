@@ -10,7 +10,7 @@
 #include <stdarg.h>
 #include "globals.h"
 
-static const char* TAG = "tcp_server";
+static const char* TAG = "http_server";
 
 //=========================================================================================================
 // Constructor() 
@@ -92,6 +92,9 @@ void CHTTPServerBase::execute()
     char c;
 
 again:
+
+    // Keep track of the high-water mark on the stack for this thread
+    StackMgr.record_hwm(TASK_IDX_HTTP_SERVER);
 
     // This is how many bytes we have remaining free in buffer that holds the incoming message
     int free_remaining = sizeof(m_message) - 1;
