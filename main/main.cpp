@@ -37,7 +37,7 @@ void cpp_main()
      // Initialize non-volatile storage in flash memory
     NVS.init();
 
-    // If there's no timezone specified, used US west-coast as a deefault
+    // If there's no timezone specified, use US west-coast as a default
     if (NVS.data.timezone[0] == 0) safe_copy(NVS.data.timezone, "PST8PDT7,M3.13.0/02:00:00,M11.6.0/02:00:00");
 
     // Set the timezone
