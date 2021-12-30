@@ -193,7 +193,7 @@ static const char script_on_config_save[] =
         "document.getElementById('exit_button').disable=true;\n"
         "result+=';netssid='+document.getElementById('netssid').value;\n"
         "result+=';netpw='+document.getElementById('netpw').value;\n"
-        "result+=';utc_offset='+document.getElementById('utc_offset').value;\n"
+        "result+=';timezone='+document.getElementById('timezone').value;\n"
 
         "var xhr=new XMLHttpRequest();\n"
         "xhr.onreadystatechange=function()\n"
@@ -282,9 +282,9 @@ void CHTTPServer::reply_to_config()
     webpage += html_config_01;
     webpage += html_config_02;
     webpage += "<tr>";
-    webpage.addf("<td><input id='netssid'    value ='%s' autofocus</td>", NVS.data.network_ssid);
-    webpage.addf("<td><input id='netpw'      value ='%s'</td>", NVS.data.network_pw);
-    webpage.addf("<td><input id='utc_offset' value ='%i'</td>", NVS.data.utc_offset);
+    webpage.addf("<td><input id='netssid'  value ='%s' autofocus</td>", NVS.data.network_ssid);
+    webpage.addf("<td><input id='netpw'    value ='%s'</td>", NVS.data.network_pw);
+    webpage.addf("<td><input id='timezone' value ='%s'</td>", NVS.data.timezone);
     webpage += "</tr>";
     webpage += "</table><br><br>";
     webpage += html_config_03;
@@ -396,8 +396,6 @@ static bool fetch_post_value(const char* input, const char* key, char* output)
     strcpy(token+1, key);
     strcat(token, "=");
 
-    printf("Searching for \"%s\"\n", token);
-
     // Does our token exist in the input string?
     const char* in = strstr(input, token);
 
@@ -441,9 +439,9 @@ void CHTTPServer::save_updated_config()
     }
 
     // Fetch the local offset (in hours) from UTC
-    if (fetch_post_value(m_request_content, "utc_offset", buffer))
+    if (fetch_post_value(m_request_content, "timezone", buffer))
     {
-        NVS.data.utc_offset = atoi(buffer);
+        safe_copy(NVS.data.timezone, buffer);
     }
 
     // Commit these values to non-volatile storage
