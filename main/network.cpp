@@ -276,8 +276,7 @@ void CNetwork::event_handler(esp_event_base_t event_base, int32_t event_id, void
             // If we've decided to fall back to Wi-Fi AP mode, make it so...
             if (AP_MODE_ON_BAD_PW && fallback_to_ap_mode)
             {
-                NVRAM.start_wifi_ap = true;
-                System.reboot();
+                System.reboot(true);
             }
 
             // Otherwise, re-initialize and try to reconnect to the WiFi access point
