@@ -179,21 +179,6 @@ static const char script_on_dimmer[] =
 
 
 
-//=========================================================================================================
-// script_on_config[] - JavaScript function "on_config()"
-//=========================================================================================================
-static const char script_on_config[] = 
-    "<script>\n"
-    "function on_config()\n"
-    "{\n"
-        "var xhr=new XMLHttpRequest();\n"
-        "xhr.open('GET','/config', true);\n"
-        "xhr.setRequestHeader('Content-Type','application/json');\n"
-        "xhr.send();\n"
-    "}\n"
-    "</script>\n";
-//=========================================================================================================
-
 
 
 //=========================================================================================================
@@ -264,7 +249,6 @@ void CHTTPServer::reply_to_index()
     webpage += script_on_main_screen_button;
     webpage += script_on_brighter;
     webpage += script_on_dimmer;
-    webpage += script_on_config;
     webpage += html_final;
     reply(200, webpage.text());
 }

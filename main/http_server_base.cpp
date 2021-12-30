@@ -122,7 +122,6 @@ again:
                 {
                     ::recv(m_sock, m_request_content, m_request_content_length, 0);
                     m_request_content[m_request_content_length] = 0;                  
-                    printf("\"%s\"\n", m_request_content);
                 }
 
                 if (m_request_type == GET)
@@ -134,8 +133,6 @@ again:
 
             // Keep track of which input line this is
             ++m_line_number;
-
-            printf("(%i) %s\n",m_line_number, m_message);
 
             // If this is the first line, we need to parse out the GET/POST command
             if (m_line_number == 1) 
