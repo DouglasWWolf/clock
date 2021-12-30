@@ -26,6 +26,9 @@ protected:
 
     // Reply to an HTTP POST /config
     void    reply_to_config();
+
+    // Save the updated configuration
+    void    save_updated_config();
 };
 //=========================================================================================================
 

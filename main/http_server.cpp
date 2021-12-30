@@ -173,7 +173,7 @@ static const char script_on_dimmer[] =
 
 
 //=========================================================================================================
-// script_on_config[] - JavaScript function "on_config"
+// script_on_config[] - JavaScript function "on_config()"
 //=========================================================================================================
 static const char script_on_config[] = 
     "<script>\n"
@@ -186,6 +186,49 @@ static const char script_on_config[] =
     "}\n"
     "</script>\n";
 //=========================================================================================================
+
+
+
+//=========================================================================================================
+// script_on_config_save[] - JavaScript function "on_config_save()"
+//=========================================================================================================
+static const char script_on_config_save[] =
+    "<script>\n"
+    "function on_config_save()\n"
+    "{\n"
+        "var result='';\n"
+        "document.getElementById('save_button').disable=true;\n"
+        "document.getElementById('exit_button').disable=true;\n"
+        "result+=';netssid='+document.getElementById('netssid').value;\n"
+        "result+=';netpw='+document.getElementById('netpw').value;\n"
+        "result+=';utc_offset='+document.getElementById('utc_offset').value;\n"
+
+        "var xhr=new XMLHttpRequest();\n"
+        "xhr.onreadystatechange=function()\n"
+        "{\n"
+            "if(xhr.readyState===4)\n"
+            "{\n"
+                "location.assign('/');\n"
+/*
+                "if(xhr.status==200)\n"
+                "{\n"
+                    "location.assign('/');\n"
+                    "return;\n"
+                "}\n"
+                "document.getElementById('save_button').disable=false;\n"
+                "document.getElementById('exit_button').disable=false;\n"
+                "location.assign('/');\n"
+*/
+                "return;\n"
+            "}\n"
+        "}\n"
+        "xhr.open('POST','/updatecfg',true);\n"
+        "xhr.setRequestHeader('Content-Type','application/json');\n"
+        "xhr.send(result);\n"
+    "}\n"
+    "</script>\n";
+//=========================================================================================================
+
 
 
 
@@ -246,9 +289,7 @@ static const char html_config_02[] =
 
 
 static const char html_config_03[] =
-    "<br>"
-    "<button class='button' id='save_button' onclick='on_config_save()'>Save Changes</button><br>"
-    "<br>"
+    "<br><button class='button' id='save_button' onclick='on_config_save()'>Save Changes</button><br><br>"
     "<form action='/' method='post'>"
     "<button class='button' type='submit', id='exit_button'>Exit Without Saving</button><br>"
     "</form>";
@@ -260,12 +301,13 @@ void CHTTPServer::reply_to_config()
     webpage += html_config_01;
     webpage += html_config_02;
     webpage += "<tr>";
-    webpage.addf("<td><input id='netssid'    value ='%s' autofocus</td>", "mountain_hold");
-    webpage.addf("<td><input id='netpw'      value ='%s'</td>", "midgets!");
-    webpage.addf("<td><input id='utc_offset' value ='%i'</td>", -7);
+    webpage.addf("<td><input id='netssid'    value ='%s' autofocus</td>", NVS.data.network_ssid);
+    webpage.addf("<td><input id='netpw'      value ='%s'</td>", NVS.data.network_pw);
+    webpage.addf("<td><input id='utc_offset' value ='%i'</td>", NVS.data.utc_offset);
     webpage += "</tr>";
     webpage += "</table><br><br>";
     webpage += html_config_03;
+    webpage += script_on_config_save;
     webpage += html_final;
 
     reply(200, webpage.text());
@@ -341,9 +383,89 @@ void CHTTPServer::on_http_post(const char* resource)
         return;
     }
 
+    // Is this "HTTP POST /updatecfg" ?
+    if (strcmp(resource, "/updatecfg") == 0)
+    {
+        save_updated_config();
+        reply(200, "");
+        return;
+    }
+
 
 
     // If we get here, the client was looking for an unknown webpage
     reply(404, "");
+}
+//=========================================================================================================
+
+
+//=========================================================================================================
+// fetch_post_value() - Fetches the value portion of a "key=value" pair from the POST data
+//=========================================================================================================
+static bool fetch_post_value(const char* input, const char* key, char* output)
+{
+    // This is the token we're going to look for
+    char token[30];
+
+    // Ensure that the caller's output field starts out empty
+    *output = 0;
+
+    // Build the token ";key="
+    token[0] = ';';
+    strcpy(token+1, key);
+    strcat(token, "=");
+
+    printf("Searching for \"%s\"\n", token);
+
+    // Does our token exist in the input string?
+    const char* in = strstr(input, token);
+
+    // If it doesn't, we're done here
+    if (in == nullptr) return false;
+
+    // Position ourselves immediately after the equals-sign
+    in = strchr(in, '=') + 1;
+
+    // Copy the requested value into the caller's buffer
+    while (*in && *in!=';') *output++ = *in++;
+
+    // Make sure the caller's buffer is nul-terminated
+    *output = 0;
+
+    // Tell the caller that we found their key and handed them the value they were looking for
+    return true;
+}
+//=========================================================================================================
+
+
+
+
+//=========================================================================================================
+// save_updated_config() - Saves the updated configuration data
+//=========================================================================================================
+void CHTTPServer::save_updated_config()
+{
+    char buffer[128];
+
+    // Fetch the network SSID
+    if (fetch_post_value(m_request_content, "netssid", buffer))
+    {
+        safe_copy(NVS.data.network_ssid, buffer);
+    }
+
+    // Fetch the network password
+    if (fetch_post_value(m_request_content, "netpw", buffer))
+    {
+        safe_copy(NVS.data.network_pw, buffer);
+    }
+
+    // Fetch the local offset (in hours) from UTC
+    if (fetch_post_value(m_request_content, "utc_offset", buffer))
+    {
+        NVS.data.utc_offset = atoi(buffer);
+    }
+
+    // Commit these values to non-volatile storage
+    NVS.write_to_flash();
 }
 //=========================================================================================================

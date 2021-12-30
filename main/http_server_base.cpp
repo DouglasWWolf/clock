@@ -377,8 +377,6 @@ void CHTTPServerBase::reply(int code, const char* content)
     // And send the content if there is any
     if (content_length) ::send(m_sock, content, content_length, 0);
 
-    if (content_length) printf("%s\n", content);
-
     // And close the socket
     close(m_sock);
     m_sock = -1;
