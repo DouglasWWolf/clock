@@ -28,6 +28,9 @@ static void display_current_time()
     // Break that out into hour, mininute, and second fields
     localtime_r(&now, &timeinfo);
 
+    if (timeinfo.tm_hour > 12) timeinfo.tm_hour -= 12;
+    if (timeinfo.tm_hour == 0) timeinfo.tm_hour = 12; 
+
     printf(">>> %2i:%02i <<<\n", timeinfo.tm_hour, timeinfo.tm_min);
 }
 
