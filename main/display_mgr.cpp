@@ -182,25 +182,25 @@ void CDisplayMgr::task()
             
             case DISPLAY_IP0:
                 display_ip_octet(ip_octet(0));
-                m_wait_time = 1000;
+                m_wait_time_ms = 1000;
                 m_current_mode = DISPLAY_IP1;
                 break;
 
             case DISPLAY_IP1:
                 display_ip_octet(ip_octet(1));
-                m_wait_time = 1000;
+                m_wait_time_ms = 1000;
                 m_current_mode = DISPLAY_IP2;
                 break;
             
             case DISPLAY_IP2:
                 display_ip_octet(ip_octet(2));
-                m_wait_time = 1000;
+                m_wait_time_ms = 1000;
                 m_current_mode = DISPLAY_IP3;
                 break;
             
             case DISPLAY_IP3:
                 display_ip_octet(ip_octet(3));
-                m_wait_time = 1000;
+                m_wait_time_ms = 1000;
                 m_current_mode = DISPLAY_NOW;
                 break;
 
