@@ -35,6 +35,9 @@ CHTTPServer HTTPServer;
 // Manages what is being output to the 7-segment display
 CDisplayMgr DisplayMgr;
 
+// SHT31 temperature sensor
+CSHT31 SHT31(0x44);
+
 //========================================================================================================= 
 // msdelay() - Do nothing for the specified number of milliseconds
 //========================================================================================================= 

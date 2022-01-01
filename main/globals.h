@@ -13,6 +13,7 @@
 #include "tcp_server.h"
 #include "http_server.h"
 #include "display_mgr.h"
+#include "sht31.h"
 
 extern CSystem     System;
 extern CNVS        NVS;
@@ -25,6 +26,7 @@ extern CI2C        I2C;
 extern CTCPServer  TCPServer;
 extern CHTTPServer HTTPServer;
 extern CDisplayMgr DisplayMgr;
+extern CSHT31      SHT31;
 
 
 uint32_t crc32(void *buf, size_t len);

@@ -28,6 +28,7 @@ protected:
     bool    handle_wifi();
     bool    handle_stack();
     bool    handle_button();
+    bool    handle_temp();
     // ------------------------------------------------------------------
 
 

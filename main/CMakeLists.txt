@@ -12,6 +12,7 @@ idf_component_register(SRCS
 "network.cpp"
 "nv_storage.cpp"
 "nvram.cpp"
+"sht31.cpp"
 "tcp_server.cpp"
 "tcp_server_base.cpp"
 "stack_track.cpp"
