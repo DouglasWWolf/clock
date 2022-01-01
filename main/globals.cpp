@@ -32,6 +32,9 @@ CI2C I2C;
 // An HTTP server for configuration management
 CHTTPServer HTTPServer;
 
+// Manages what is being output to the 7-segment display
+CDisplayMgr DisplayMgr;
+
 //========================================================================================================= 
 // msdelay() - Do nothing for the specified number of milliseconds
 //========================================================================================================= 

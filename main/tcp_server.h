@@ -27,6 +27,7 @@ protected:
     bool    handle_rssi();
     bool    handle_wifi();
     bool    handle_stack();
+    bool    handle_button();
     // ------------------------------------------------------------------
 
 

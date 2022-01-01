@@ -1,6 +1,7 @@
 idf_component_register(SRCS
 "button.cpp"
 "buttons.cpp"
+"display_mgr.cpp"
 "flash_io.cpp"
 "globals.cpp"
 "http_server.cpp"
@@ -11,7 +12,6 @@ idf_component_register(SRCS
 "network.cpp"
 "nv_storage.cpp"
 "nvram.cpp"
-"parser.cpp"
 "tcp_server.cpp"
 "tcp_server_base.cpp"
 "stack_track.cpp"

@@ -126,6 +126,7 @@ void get_time_via_ntp()
         {
             System.has_current_time = true;
             printf("The current year is %i\n", timeinfo.tm_year + 1900);
+            DisplayMgr.display_now();
             break;
         }
     }
@@ -632,6 +633,9 @@ void CNetwork::start_as_ap(ap_mode_t reason)
     #if 0
     ble_server_begin();
     #endif
+
+    // Tell the rest of the world our IP address
+    strcpy(System.ip_addr, "192.168.4.1");
 
     // And start the servers
     TCPServer.start();

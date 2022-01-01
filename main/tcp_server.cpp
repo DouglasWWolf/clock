@@ -263,8 +263,15 @@ bool CTCPServer::handle_stack()
 }
 //========================================================================================================= 
 
-
-
+//========================================================================================================= 
+// handle_button() - Simulates pressing the user-interface button
+//========================================================================================================= 
+bool CTCPServer::handle_button()
+{
+    DisplayMgr.display_ip_address();
+    return pass();
+}
+//========================================================================================================= 
 
 
 //=========================================================================================================
@@ -284,6 +291,7 @@ void CTCPServer::on_command(const char* token)
     else if token_is("rssi")     handle_rssi();
     else if token_is("wifi")     handle_wifi();
     else if token_is("stack")    handle_stack();
+    else if token_is("button")   handle_button();
 
     else fail_syntax();
 }

@@ -53,11 +53,17 @@ void cpp_main()
     // Tell any software watching the serial port what firmware version we are
     printf("%s\n", EXE_TAG);
 
+    // Start the display manager
+    DisplayMgr.start();
+
     // Initialize the provisioning button
     ProvButton.init(PIN_PROV_BUTTON);
 
     // Configure the I2C bus.   This must be done before initializing I2C peripherals
     I2C.init(I2C_NUM_0, PIN_I2C_SDA, PIN_I2C_SCL);
+
+    // Start the display manager
+    DisplayMgr.start();
 
     // Find out if we should start the Wi-Fi in "Access-Point" mode
     bool start_as_ap = ProvButton.is_pressed()       ||

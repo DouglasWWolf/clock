@@ -12,6 +12,7 @@
 #include "i2c_bus.h"
 #include "tcp_server.h"
 #include "http_server.h"
+#include "display_mgr.h"
 
 extern CSystem     System;
 extern CNVS        NVS;
@@ -23,6 +24,7 @@ extern CProvButton ProvButton;
 extern CI2C        I2C;
 extern CTCPServer  TCPServer;
 extern CHTTPServer HTTPServer;
+extern CDisplayMgr DisplayMgr;
 
 
 uint32_t crc32(void *buf, size_t len);

@@ -9,3 +9,10 @@
 // 1000  12-Dec-21  DWW  Initial creation
 //=========================================================================================================
 #define FW_VERSION "1000" 
+
+
+/*
+New System.reboot(ap_mode) flag in framework
+Fix the "reboot to AP on bad password" in framework
+
+*/
