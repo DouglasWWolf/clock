@@ -10,7 +10,6 @@
 //=========================================================================================================
 void CProvButton::handler(bool state, uint32_t elapsed)
 {
-    printf("Button state: %i for %i\n", state, elapsed);
     // Tell the display manager to display the system IP address
     if (state == 0 && elapsed < 2000) DisplayMgr.display_ip_address();
 
