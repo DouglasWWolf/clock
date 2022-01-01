@@ -24,9 +24,6 @@ public:
 
 protected:
 
-    // This is the index (0 thru 3) of the next octet of the IP address to display
-    int             m_ip_octet;
-    
     // This is the handle of the currently running server task
     TaskHandle_t    m_task_handle;
 

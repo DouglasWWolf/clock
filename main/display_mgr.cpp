@@ -6,7 +6,15 @@
 
 #define FOREVER 0xFFFFFFFF
 
-enum qentry_t : unsigned char  {DISPLAY_NOW, WAITING_FOR_FLIP, DISPLAY_IP};
+enum qentry_t : unsigned char
+{
+    DISPLAY_NOW,
+    WAITING_FOR_FLIP,
+    DISPLAY_IP0,
+    DISPLAY_IP1,
+    DISPLAY_IP2,
+    DISPLAY_IP3
+};
 qentry_t current_mode = DISPLAY_NOW;
 
 
@@ -131,7 +139,7 @@ void CDisplayMgr::display_now()
 //=========================================================================================================
 void CDisplayMgr::display_ip_address()
 {
-    qentry_t cmd = DISPLAY_IP;
+    qentry_t cmd = DISPLAY_IP0;
     xQueueSend(m_event_queue, &cmd, 0);
 }
 //=========================================================================================================
@@ -158,11 +166,7 @@ void CDisplayMgr::task()
         TickType_t ticks = (m_wait_time_ms == FOREVER) ? portMAX_DELAY : m_wait_time_ms / portTICK_PERIOD_MS;
 
         // If we received a new message from the event queue, switch to that mode
-        if (xQueueReceive(m_event_queue, &cmd, ticks))
-        {
-            current_mode = cmd;
-            if (current_mode == DISPLAY_IP) m_ip_octet = 0;
-        }
+        if (xQueueReceive(m_event_queue, &cmd, ticks)) current_mode = cmd;
         
         // Do whatever it correct for the current mode
         switch(current_mode)
@@ -176,17 +180,28 @@ void CDisplayMgr::task()
                 if (seconds_until_flip() > 55) display_current_time();
                 break;
             
-            case DISPLAY_IP:
-                if (m_ip_octet > 3)
-                {
-                    display_current_time();
-                    current_mode = WAITING_FOR_FLIP;
-                }
-                else
-                {
-                    display_ip_octet(ip_octet(m_ip_octet++));
-                    m_wait_time_ms = 1000;
-                }
+            case DISPLAY_IP0:
+                display_ip_octet(ip_octet(0));
+                m_wait_time = 1000;
+                m_current_mode = DISPLAY_IP1;
+                break;
+
+            case DISPLAY_IP1:
+                display_ip_octet(ip_octet(1));
+                m_wait_time = 1000;
+                m_current_mode = DISPLAY_IP2;
+                break;
+            
+            case DISPLAY_IP2:
+                display_ip_octet(ip_octet(2));
+                m_wait_time = 1000;
+                m_current_mode = DISPLAY_IP3;
+                break;
+            
+            case DISPLAY_IP3:
+                display_ip_octet(ip_octet(3));
+                m_wait_time = 1000;
+                m_current_mode = DISPLAY_NOW;
                 break;
 
             default:
