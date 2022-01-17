@@ -20,6 +20,9 @@ public:
     // This is a convenience method that calls "perform" to do an I2C read for a specified number of bytes
     bool    read(int i2c_address, void* vp_data, int length);
 
+    // This is a convience method that calls "perform" to do an I2C write for a specified number of bytes
+    bool    write(int i2c_address, void* vp_data, int length);
+
     // This is a convenience method that calls "perform" to write one or two integer values to an I2C device
     bool    write(int i2c_address, int val1, int len1, int val2=0, int len2=0);
 

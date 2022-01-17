@@ -49,8 +49,8 @@
 // GPIO pin definitions
 //=========================================================================================================
 #define PIN_PROV_BUTTON GPIO_NUM_34
-#define PIN_I2C_SDA     GPIO_NUM_4
-#define PIN_I2C_SCL     GPIO_NUM_15
+#define PIN_I2C_SDA     GPIO_NUM_17
+#define PIN_I2C_SCL     GPIO_NUM_5
 //=========================================================================================================
 
 
@@ -85,7 +85,8 @@ struct nvsdata_t
     char      network_pw[NET_PW_ENC_LEN];
     char      network_user[64];
     char      timezone[60];
-    char      unused[728];
+    char      brightness;
+    char      unused[727];
 };
 //=========================================================================================================
 

@@ -18,6 +18,9 @@ enum qentry_t : unsigned char
 qentry_t current_mode = DISPLAY_NOW;
 
 
+//=========================================================================================================
+// display_current_time() - Displays the current wall-clock time on the display
+//=========================================================================================================
 static void display_current_time()
 {
     struct tm timeinfo;
@@ -31,8 +34,10 @@ static void display_current_time()
     if (timeinfo.tm_hour > 12) timeinfo.tm_hour -= 12;
     if (timeinfo.tm_hour == 0) timeinfo.tm_hour = 12; 
 
+    Display.show_time(timeinfo.tm_hour, timeinfo.tm_min);
     printf(">>> %2i:%02i <<<\n", timeinfo.tm_hour, timeinfo.tm_min);
 }
+//=========================================================================================================
 
 static void display_ip_octet(const char* s)
 {

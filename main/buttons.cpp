@@ -13,6 +13,7 @@ void CProvButton::handler(bool state, uint32_t elapsed)
     // Tell the display manager to display the system IP address
     if (state == 0 && elapsed < 2000) DisplayMgr.display_ip_address();
 
+    Display.show_time(6, 25);
     // Keep track of how much stack space we use
     StackMgr.record_hwm(TASK_IDX_PROV_BUTTON);
 }

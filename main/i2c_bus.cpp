@@ -94,6 +94,47 @@ bool  CI2C::read(int i2c_address, void* vp_data, int length)
 //=========================================================================================================
 
 
+
+//=========================================================================================================
+// write() - A convenience method that writes data from an I2C device
+//=========================================================================================================
+bool CI2C::write(int i2c_address, void* vp_data, int length)
+{
+    // Allow 0 length writes
+    if (length < 1) return true;
+   
+    // Turn the void* into a U8*
+    U8* p_data = (U8*) vp_data;
+
+    // Allocate an I2C command buffers
+    i2c_cmd_handle_t cmd = i2c_cmd_link_create();
+
+    // Initialize the write-operation buffer
+    i2c_master_start(cmd);
+
+    // Tell the I2C bus that this is going to be a write operation to the specified device
+    i2c_master_write_byte(cmd, i2c_address << 1 | I2C_MASTER_WRITE, true);
+
+    // Buffer up the bytes to be written
+    while (length--) i2c_master_write_byte(cmd, *p_data++, true);
+
+    // Finalize the command buffer
+    i2c_master_stop(cmd);
+ 
+    // Perform the I2C write commands
+    bool status = I2C.perform(cmd);
+
+    // Free up the resources we allocated earlier
+    i2c_cmd_link_delete(cmd);
+ 
+    // Tell the caller whether this I2C write operation worked
+    return status;
+}
+//=========================================================================================================
+
+
+
+
 //=========================================================================================================
 // write() - A conveience method that writes one or two integer values of arbitrary length to the 
 //           an I2C device

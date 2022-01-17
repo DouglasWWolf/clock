@@ -4,6 +4,7 @@ idf_component_register(SRCS
 "display_mgr.cpp"
 "flash_io.cpp"
 "globals.cpp"
+"ht16k33.cpp"
 "http_server.cpp"
 "http_server_base.cpp"
 "i2c_bus.cpp"

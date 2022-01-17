@@ -38,6 +38,9 @@ CDisplayMgr DisplayMgr;
 // SHT31 temperature sensor
 CSHT31 SHT31(0x44);
 
+// The HT1633K display driver
+CHT16K33 Display;
+
 //========================================================================================================= 
 // msdelay() - Do nothing for the specified number of milliseconds
 //========================================================================================================= 

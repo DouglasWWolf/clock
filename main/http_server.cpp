@@ -373,6 +373,14 @@ void CHTTPServer::on_http_post(const char* resource)
     {
         reply(201, "");
         printf(">> Brighter! <<\n");
+
+        if (NVS.data.brightness < 15)
+        {
+            NVS.data.brightness++;
+            printf("New brightness = %i\n", NVS.data.brightness);
+            Display.set_brightness(NVS.data.brightness);
+            NVS.write_to_flash();
+        }
         return;
     }
 
@@ -382,6 +390,14 @@ void CHTTPServer::on_http_post(const char* resource)
     {
         reply(201, "");
         printf(">> Dimmer! <<\n");
+
+        if (NVS.data.brightness > 0)
+        {
+            NVS.data.brightness--;
+            printf("New brightness = %i\n", NVS.data.brightness);
+            Display.set_brightness(NVS.data.brightness);
+            NVS.write_to_flash();
+        }
         return;
     }
 

@@ -62,6 +62,10 @@ void cpp_main()
     // Configure the I2C bus.   This must be done before initializing I2C peripherals
     I2C.init(I2C_NUM_0, PIN_I2C_SDA, PIN_I2C_SCL);
 
+    // Initialize the multi-digit 7-segment display driver
+    Display.init(0x70);
+    Display.set_brightness(NVS.data.brightness);
+
     // Start the display manager
     DisplayMgr.start();
 
