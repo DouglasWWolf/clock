@@ -53,9 +53,6 @@ void cpp_main()
     // Tell any software watching the serial port what firmware version we are
     printf("%s\n", EXE_TAG);
 
-    // Start the display manager
-    DisplayMgr.start();
-
     // Initialize the provisioning button
     ProvButton.init(PIN_PROV_BUTTON);
 
@@ -81,9 +78,15 @@ void cpp_main()
     // start the network in "access point" mode, otherwise start trying to
     // connect to the local WiFi network.
     if (start_as_ap)  
+    {
+        Display.show_string(" AP ");
         Network.start_as_ap(AP_MODE_DEFAULT);
+    }
     else
+    {
+        Display.show_wait_for_router();
         Network.start();
+    }
     
 
     // Start the main periodic task

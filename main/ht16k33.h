@@ -20,6 +20,12 @@ public:
     // Displays a 4 character string on the display
     void    show_string(const char* s);
 
+    // Display a blinking dot to show we're connecting to the router
+    void    show_wait_for_router();
+
+    // Display a blinking colon to show we're waiting for SNTP
+    void    show_wait_for_ntp();
+
     // Call this to change the display brightness.  "Level" should be 0 thru 15
     void    set_brightness(int level);
 

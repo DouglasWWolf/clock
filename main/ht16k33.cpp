@@ -21,9 +21,9 @@
 #define CMD_BRIGHTNESS  0xE0 
 
 #define BLINK_OFF      0     
-#define BLINK_2HZ      1     
-#define BLINK_1HZ      2     
-#define BLINK_HALFHZ   3     
+#define BLINK_2HZ      2     
+#define BLINK_1HZ      4     
+#define BLINK_HALFHZ   6     
 
 
 static const unsigned char font[] =
@@ -160,7 +160,10 @@ void CHT16K33::show_time(int hour, int minute)
     char buffer[17];
     const int DIGIT_OFFSET = 16;
 
-    printf(">>>> show_time(%i, %i)\n", hour, minute);
+    // Make sure blinking is turned off
+    I2C.write(m_i2c_address, CMD_CONFIG | BLINK_OFF, 1);
+
+    // The 16-byte buffer we send to address zero starts out cleared
     memset(buffer, 0, sizeof buffer);
 
     // Compute the offsets into the font table for each digit
@@ -240,6 +243,53 @@ void CHT16K33::show_string(const char* ascii)
     I2C.write(m_i2c_address, buffer, sizeof buffer);
 }
 //=========================================================================================================
+
+//=========================================================================================================
+// show_wait_for_router() - Display a blinking dot
+//=========================================================================================================
+void CHT16K33::show_wait_for_router()
+{
+    char buffer[17];
+   
+    // Clear the buffer we're going to send to the device
+    memset(buffer, 0, sizeof buffer);
+
+    // Turn on the upper-left dot
+    buffer[5] = 4;
+
+    // Write the 16 bytes of data to address 0 in the device
+    I2C.write(m_i2c_address, buffer, sizeof buffer);
+
+    // And set the display to blink every 1/2 second
+    I2C.write(m_i2c_address, CMD_CONFIG | BLINK_2HZ, 1);
+}
+//=========================================================================================================
+
+
+
+
+//=========================================================================================================
+// show_wait_ntp() - Display a blinking colon
+//=========================================================================================================
+void CHT16K33::show_wait_for_ntp()
+{
+    char buffer[17];
+   
+    // Clear the buffer we're going to send to the device
+    memset(buffer, 0, sizeof buffer);
+
+    // Turn on the upper-left dot
+    buffer[5] = 2;
+
+    // Write the 16 bytes of data to address 0 in the device
+    I2C.write(m_i2c_address, buffer, sizeof buffer);
+
+    // And set the display to blink every 1/2 second
+    I2C.write(m_i2c_address, CMD_CONFIG | BLINK_2HZ, 1);
+}
+//=========================================================================================================
+
+
 
 
 

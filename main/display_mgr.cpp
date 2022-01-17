@@ -142,6 +142,8 @@ void CDisplayMgr::start()
 
     // How long we should wait for an incoming event
     m_wait_time_ms = FOREVER;
+    
+    printf(">>> Starting Display Manager <<<\n");
 
     // Create the task
     xTaskCreatePinnedToCore(launch_task, "display_mgr", 3000, this, DEFAULT_TASK_PRI, &m_task_handle, TASK_CPU);
@@ -180,9 +182,6 @@ void CDisplayMgr::display_ip_address()
 void CDisplayMgr::task()
 {
     qentry_t cmd;
-
-    // If we're in Wi-Fi AP mode, say so on the display
-    if (Network.wifi_status() == WIFI_AP_MODE) Display.show_string(" AP ");
 
     while (true)
     {

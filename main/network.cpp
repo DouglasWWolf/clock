@@ -98,6 +98,9 @@ void get_time_via_ntp()
     time_t now = 0;
     struct tm timeinfo;
 
+    // Tell the display to indicate "We're waiting to obtain the time"
+    Display.show_wait_for_ntp();
+
     ESP_LOGI(WIFI_TAG, "Initializing SNTP");
     sntp_stop();
     sntp_setoperatingmode(SNTP_OPMODE_POLL);
