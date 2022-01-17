@@ -14,6 +14,12 @@ public:
     // Displays the time with two dots between hour and minute
     void    show_time(int hour, int minute);
 
+    // Displays a positive integer of 1 to 4 characters
+    void    show_number(int n);
+
+    // Displays a 4 character string on the display
+    void    show_string(const char* s);
+
     // Call this to change the display brightness.  "Level" should be 0 thru 15
     void    set_brightness(int level);
 

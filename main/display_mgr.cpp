@@ -25,32 +25,52 @@ static void display_current_time()
 {
     struct tm timeinfo;
 
+    // If we're in Wi-Fi AP mode, don't display a time
+    if (Network.wifi_status() == WIFI_AP_MODE)
+    {
+        Display.show_string(" AP ");
+        return;
+    }
+
     // Find out the current time and date
     time_t now = time(NULL);
 
     // Break that out into hour, mininute, and second fields
     localtime_r(&now, &timeinfo);
 
+    // Convert military time into conventional time
     if (timeinfo.tm_hour > 12) timeinfo.tm_hour -= 12;
     if (timeinfo.tm_hour == 0) timeinfo.tm_hour = 12; 
 
+    // Display the time on the physical display
     Display.show_time(timeinfo.tm_hour, timeinfo.tm_min);
+
+    // Print the time to stdout to aid in debugging
     printf(">>> %2i:%02i <<<\n", timeinfo.tm_hour, timeinfo.tm_min);
 }
 //=========================================================================================================
 
-static void display_ip_octet(const char* s)
+
+//=========================================================================================================
+// display_ip_octet() - Displays a single octet of our IP address
+//=========================================================================================================
+static void display_ip_octet(int n)
 {
-    printf(">>> %s <<<\n", s);
+    // Display the characters on the phyiscal display
+    Display.show_number(n);
+
+    // Print the number to stdout to aid in debugging
+    printf(">>> %i <<<\n", n);
 }
+//=========================================================================================================
 
 
 //=========================================================================================================
 // ip_octet() - Returns a pointer to the ASCII representation of the specified IP address octet
 //=========================================================================================================
-static const char* ip_octet(int index)
+static int ip_octet(int index)
 {
-    static char buffer[10];
+    char buffer[10];
     
     // Point to the buffer where we're going to store the ASCII octet
     char *out = buffer;
@@ -67,8 +87,8 @@ static const char* ip_octet(int index)
     // Nul-terminate the buffer
     *out = 0;
 
-    // And hand the static buffer to the caller
-    return buffer;
+    // And hand the octet to the caller
+    return atoi(buffer);
 }
 //=========================================================================================================
 
@@ -160,6 +180,9 @@ void CDisplayMgr::display_ip_address()
 void CDisplayMgr::task()
 {
     qentry_t cmd;
+
+    // If we're in Wi-Fi AP mode, say so on the display
+    if (Network.wifi_status() == WIFI_AP_MODE) Display.show_string(" AP ");
 
     while (true)
     {

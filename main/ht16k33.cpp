@@ -160,7 +160,6 @@ void CHT16K33::show_time(int hour, int minute)
     char buffer[17];
     const int DIGIT_OFFSET = 16;
 
-
     printf(">>>> show_time(%i, %i)\n", hour, minute);
     memset(buffer, 0, sizeof buffer);
 
@@ -181,6 +180,69 @@ void CHT16K33::show_time(int hour, int minute)
     I2C.write(m_i2c_address, buffer, sizeof buffer);
 }
 //=========================================================================================================
+
+
+//=========================================================================================================
+// show_number() - Displays a 1 to 4 digit number
+//=========================================================================================================
+void CHT16K33::show_number(int n)
+{
+    char buffer[17], ascii[10];
+    
+    // Fetch an ASCII representation of the number
+    sprintf(ascii, "%4i", n);
+    
+    // Clear the buffer we're going to send to the device
+    memset(buffer, 0, sizeof buffer);
+
+    // Compute the offsets into the font table for each digit
+    int c1 = ascii[0] - 32;
+    int c2 = ascii[1] - 32;
+    int c3 = ascii[2] - 32;
+    int c4 = ascii[3] - 32;
+
+    // Place each digit into the data buffer
+    buffer[1] = font[c1];
+    buffer[3] = font[c2];
+    buffer[7] = font[c3];
+    buffer[9] = font[c4];
+
+    // Write the 16 bytes of data to address 0 in the device
+    I2C.write(m_i2c_address, buffer, sizeof buffer);
+}
+//=========================================================================================================
+
+
+
+//=========================================================================================================
+// show_string() - Displays a 4 character string on the display
+//=========================================================================================================
+void CHT16K33::show_string(const char* ascii)
+{
+    char buffer[17];
+   
+    // Clear the buffer we're going to send to the device
+    memset(buffer, 0, sizeof buffer);
+
+    // Compute the offsets into the font table for each digit
+    int c1 = ascii[0] - 32;
+    int c2 = ascii[1] - 32;
+    int c3 = ascii[2] - 32;
+    int c4 = ascii[3] - 32;
+
+    // Place each digit into the data buffer
+    buffer[1] = font[c1];
+    buffer[3] = font[c2];
+    buffer[7] = font[c3];
+    buffer[9] = font[c4];
+
+    // Write the 16 bytes of data to address 0 in the device
+    I2C.write(m_i2c_address, buffer, sizeof buffer);
+}
+//=========================================================================================================
+
+
+
 
 
 //=========================================================================================================
